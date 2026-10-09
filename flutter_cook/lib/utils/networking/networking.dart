@@ -134,6 +134,10 @@ class DioClient {
       case DioExceptionType.receiveTimeout:
         message = 'request_timeout'.tr;
         code = 'RECEIVE_TIMEOUT';
+      // dio 5.11 起新增转换超时类型（响应数据解析阶段超时），语义上同属请求超时。
+      case DioExceptionType.transformTimeout:
+        message = 'request_timeout'.tr;
+        code = 'TRANSFORM_TIMEOUT';
       case DioExceptionType.badResponse:
         final statusCode = e.response?.statusCode;
         message = _getHttpErrorMessage(statusCode);

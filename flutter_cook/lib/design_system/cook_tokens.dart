@@ -91,7 +91,52 @@ class CookTokens {
   static const double headerToolIconSize = 24;
 
   /// 浮动 TabBar 标准高度。
-  static const double tabBarHeight = 72;
+  ///
+  /// 取值对齐 iOS 26 系统浮动 TabBar 实测高度（约 67pt），保证与原生观感一致。
+  static const double tabBarHeight = 68;
+
+  /// 浮动 TabBar 宽度上限，超出后保持居中不再拉伸。
+  ///
+  /// 与 iOS 26 浮动栏一致：左右各留 20pt 安全边距，402pt 宽机型上约为 362pt。
+  static const double tabBarMaxWidth = 362;
+
+  /// 浮动 TabBar 距屏幕底边的距离。
+  ///
+  /// iOS 26.5 系统 App 实测（iPhone 17 Pro，底部安全区 34pt）：
+  /// 「文件」20pt、「音乐」22pt，均完整位于 Home Indicator 之上并留出可见间距；
+  /// 仅「照片」这类全屏媒体 App 会压到 12pt。这里取标准 App 的 20pt。
+  static const double tabBarBottomInset = 20;
+
+  /// 浮动 TabBar 底边间距相对底部安全区的比例。
+  ///
+  /// 由实测反推：20pt / 34pt ≈ 0.6。用于在底部安全区更大的设备上等比留白，
+  /// 避免固定值在大安全区机型上显得贴边。
+  static const double tabBarBottomInsetRatio = 0.6;
+
+  /// 单个 Tab 的标称宽度，用于按项数推导浮动栏宽度（对齐原生内容自适应宽度）。
+  ///
+  /// 实测：3 项时栏宽约 317pt、2 项胶囊约 187pt，反推单顶宽约 94~100pt。
+  static const double tabBarItemWidth = 96;
+
+  /// 浮动栏两侧的内边距，用于按项数推导宽度时补齐胶囊内衬。
+  static const double tabBarInlinePadding = 16;
+
+  /// 浮动 TabBar 玻璃模糊半径（sigma），数值越大背景内容越柔和。
+  static const double tabBarGlassBlur = 30;
+
+  /// 浮动 TabBar 玻璃填充透明度（浅色模式）。
+  ///
+  /// 依据 iOS 26 规范，玻璃表面不再叠加额外加深背景，可读性由模糊与滚动边缘淡出承担；
+  /// 该透明度仅用于保证中文标签在照片背景上的对比度。
+  /// 实测原生玻璃在浅色页面上会把背景亮度抬高约 +7（247 → 254），
+  /// 0.76 的白色填充在浅色底上复现同等提亮，同时保持内容可透视。
+  static const double tabBarGlassFillOpacity = 0.76;
+
+  /// 浮动 TabBar 玻璃填充透明度（深色模式）。
+  static const double tabBarGlassFillOpacityDark = 0.60;
+
+  /// 滚动边缘淡出区域在 TabBar 之上额外延伸的高度。
+  static const double tabBarScrollEdgeHeight = 28;
 
   /// 极小装饰和细拉手圆角。
   static const double radiusXs = 4;

@@ -1,57 +1,22 @@
 PODS:
   - Flutter (1.0.0)
-  - gal (1.0.0):
-    - Flutter
-    - FlutterMacOS
-  - shared_preferences_foundation (0.0.1):
-    - Flutter
-    - FlutterMacOS
-  - sqflite_darwin (0.0.4):
-    - Flutter
-    - FlutterMacOS
-  - video_player_avfoundation (0.0.1):
-    - Flutter
-    - FlutterMacOS
   - wakelock (0.0.1):
     - Flutter
-  - webview_flutter_wkwebview (0.0.1):
-    - Flutter
-    - FlutterMacOS
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - gal (from `.symlinks/plugins/gal/darwin`)
-  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
-  - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
-  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
-  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  gal:
-    :path: ".symlinks/plugins/gal/darwin"
-  shared_preferences_foundation:
-    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
-  sqflite_darwin:
-    :path: ".symlinks/plugins/sqflite_darwin/darwin"
-  video_player_avfoundation:
-    :path: ".symlinks/plugins/video_player_avfoundation/darwin"
   wakelock:
     :path: ".symlinks/plugins/wakelock/ios"
-  webview_flutter_wkwebview:
-    :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
 SPEC CHECKSUMS:
-  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  gal: 6a522c75909f1244732d4596d11d6a2f86ff37a5
-  shared_preferences_foundation: 5086985c1d43c5ba4d5e69a4e8083a389e2909e6
-  sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
-  video_player_avfoundation: 7993f492ae0bd77edaea24d9dc051d8bb2cd7c86
+  Flutter: 71a624a5bc0c04062bf19101d501e466baf2fb47
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
-  webview_flutter_wkwebview: 29eb20d43355b48fe7d07113835b9128f84e3af4
 
-PODFILE CHECKSUM: a57f30d18f102dd3ce366b1d62a55ecbef2158e5
+PODFILE CHECKSUM: 9dca55e7ad8b94d49c0e1df4fe6b919d7b7bb515
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.17.0

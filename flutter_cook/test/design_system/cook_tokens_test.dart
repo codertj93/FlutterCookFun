@@ -19,7 +19,22 @@ void main() {
     expect(CookTokens.chipHeight, 36);
     expect(CookTokens.headerToolButtonSize, 44);
     expect(CookTokens.headerToolIconSize, 24);
-    expect(CookTokens.tabBarHeight, 72);
+    // 浮动 TabBar 几何对齐 iOS 26 系统实测值：高 67~68pt、左右各 20pt、距底约 20pt。
+    expect(CookTokens.tabBarHeight, 68);
+    expect(CookTokens.tabBarMaxWidth, 362);
+    expect(CookTokens.tabBarBottomInset, 20);
+    expect(CookTokens.tabBarBottomInsetRatio, 0.6);
+    expect(CookTokens.tabBarItemWidth, 96);
+    expect(CookTokens.tabBarGlassBlur, 30);
+    expect(CookTokens.tabBarScrollEdgeHeight, 28);
+    // 对齐原生玻璃的透明度：填充不能过实，否则会明显偏离系统材质观感。
+    expect(CookTokens.tabBarGlassFillOpacity, lessThan(0.8));
+    // 玻璃填充过薄会牺牲中文标签在照片背景上的可读性，这里锁定下限。
+    expect(
+      CookTokens.tabBarGlassFillOpacity,
+      greaterThan(CookTokens.tabBarGlassFillOpacityDark),
+    );
+    expect(CookTokens.tabBarGlassFillOpacity, greaterThan(0.7));
     expect(CookTokens.radiusXs, 4);
     expect(CookTokens.radiusSm, 6);
     expect(CookTokens.radiusMd, 8);

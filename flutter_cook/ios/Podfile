@@ -1,5 +1,21 @@
-# Uncomment this line to define a global platform for your project
-platform :ios, '13.0'
+# Xcode 27 的 iOS SDK 只接受 15.0 及以上的部署目标，低于该值时构建会直接抛出 Target Integrity 错误。
+platform :ios, '15.0'
+
+# 与 platform 保持一致的部署目标下限，供 post_install 中的兜底覆写复用。
+MIN_IOS_DEPLOYMENT_TARGET = '15.0'
+
+# 将目标/工程的部署目标统一抬高到 MIN_IOS_DEPLOYMENT_TARGET。
+# 部分 Flutter 插件的 podspec 仍声明 11.0/12.0/13.0，CocoaPods 会把这些值写入 Pods 工程，
+# 仅修改 Podfile 的 platform 不足以覆盖它们，必须在 post_install 中显式改写。
+def raise_ios_deployment_target(build_configurations)
+  build_configurations.each do |config|
+    current = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+    # 只抬高不降低：若某个 pod 明确要求更高的版本，保留其声明，避免破坏该依赖的兼容性约束。
+    next if !current.nil? && current.to_f >= MIN_IOS_DEPLOYMENT_TARGET.to_f
+
+    config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = MIN_IOS_DEPLOYMENT_TARGET
+  end
+end
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -40,5 +56,8 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+    raise_ios_deployment_target(target.build_configurations)
   end
+  # 部分 pod 的部署目标只写在 Pods 工程级配置上，需要一并抬高。
+  raise_ios_deployment_target(installer.pods_project.build_configurations)
 end

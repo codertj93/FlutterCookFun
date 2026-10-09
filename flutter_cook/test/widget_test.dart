@@ -291,7 +291,9 @@ void main() {
       final tabBar = tester.widget<DecoratedBox>(
           find.byKey(const ValueKey('cook_floating_tab_bar')));
       final decoration = tabBar.decoration as BoxDecoration;
-      expect(decoration.color?.a, greaterThan(0.80));
+      // 对齐 iOS 26 原生玻璃：填充保持高透明度，可读性由模糊与滚动边缘淡出共同承担。
+      expect(decoration.color?.a, greaterThan(0.60));
+      expect(decoration.color?.a, lessThan(0.80));
       expect(
         decoration.borderRadius,
         BorderRadius.circular(CookTokens.tabBarHeight / 2),
@@ -312,7 +314,7 @@ void main() {
           tester.getSize(find.byKey(const ValueKey('cook_tab_0')));
       expect(selectedPillSize.width, lessThan(tabItemSize.width));
       expect(selectedPillSize.height, lessThan(tabItemSize.height));
-      expect(selectedPillSize.height, closeTo(50, 0.1));
+      expect(selectedPillSize.height, closeTo(52, 0.1));
 
       final selectedLabel = tester.widget<Text>(find.text('首页').last);
       expect(selectedLabel.style?.color,
