@@ -19,17 +19,19 @@ allprojects {
 rootProject.buildDir = '../build'
 subprojects { sub ->
     sub.buildDir = "${rootProject.buildDir}/${sub.name}"
-    if (!sub.state.executed) {
-        sub.afterEvaluate {
-            if (hasProperty('android') && android.namespace == null) {
-                android.namespace = group?.toString() ?: "com.missing.${name}"
+    def applyAndroidFixes = { p ->
+        if (p.plugins.hasPlugin('com.android.library') || p.plugins.hasPlugin('com.android.application')) {
+            // 统一插件子模块 compileSdk，规避旧插件依赖旧 API 平台导致的编译失败
+            p.android.compileSdkVersion(36)
+            if (p.android.namespace == null) {
+                p.android.namespace = p.group?.toString() ?: "com.missing.${p.name}"
             }
         }
+    }
+    if (!sub.state.executed) {
+        sub.afterEvaluate(applyAndroidFixes)
     } else {
-        // already evaluated — apply namespace fix immediately
-        if (sub.hasProperty('android') && sub.android.namespace == null) {
-            sub.android.namespace = sub.group?.toString() ?: "com.missing.${sub.name}"
-        }
+        applyAndroidFixes(sub)
     }
 }
 subprojects {
