@@ -1,0 +1,47 @@
+# 蒲公英 (Pgyer) 自动打包 + 上传
+# 用法：项目根目录执行 `bundle exec fastlane android beta`
+#      仅上传：`bundle exec fastlane android upload_pgyer`
+
+default_platform(:android)
+
+# 项目根目录（Fastfile 位于 fastlane/ 子目录下）
+PROJECT_ROOT = File.expand_path("..", __dir__)
+
+def default_apk_path
+  File.join(PROJECT_ROOT, "build/app/outputs/flutter-apk/app-release.apk")
+end
+
+def pgyer_upload_params(apk_path)
+  params = {
+    api_key: ENV["PGYER_API_KEY"],
+    apk: apk_path,
+    install_type: ENV["PGYER_INSTALL_TYPE"] || "1", # 1=公开 2=密码 3=邀请
+    update_description: ENV["PGYER_UPDATE_DESCRIPTION"] || "Fastlane 自动上传"
+  }
+  params[:password] = ENV["PGYER_PASSWORD"] unless ENV["PGYER_PASSWORD"].to_s.empty?
+  params
+end
+
+platform :android do
+  desc "构建 Release APK 并上传到蒲公英"
+  lane :beta do
+    # 1. 构建 Release APK
+    sh("cd #{PROJECT_ROOT.shellescape} && flutter build apk --release")
+
+    # 2. 定位产物
+    apk_path = default_apk_path
+    UI.user_error!("找不到 APK: #{apk_path}") unless File.exist?(apk_path)
+
+    # 3. 上传蒲公英
+    pgyer(**pgyer_upload_params(apk_path))
+  end
+
+  desc "仅上传已构建的 APK 到蒲公英（可选参数 apk: 指定路径）"
+  lane :upload_pgyer do |options|
+    apk_path = options[:apk] || default_apk_path
+    apk_path = File.expand_path(apk_path, PROJECT_ROOT)
+    UI.user_error!("找不到 APK: #{apk_path}") unless File.exist?(apk_path)
+
+    pgyer(**pgyer_upload_params(apk_path))
+  end
+end
